@@ -2,16 +2,21 @@
 export interface Props {
   title: string;
   state: string;
+  fontSize: string;
 }
 
-const { title, state } = Astro.props;
+const { title, state, fontSize } = Astro.props;
 ---
 
-<button class={"btn_" + state}>{title}</button>
+<button class={"btn_" + state} style={"font-size:" + fontSize + ";"}>{title}</button>
 
 <style>
   button {
     background: rgb(49, 100, 255);
     color: white;
+    padding: 0.8em 1.6em;
+    border: 0;
+    font-weight: 800;
+    border-radius: 0.1rem;
   }
 </style>

@@ -17,29 +17,44 @@ import Button from "../components/Button.astro";
     </div>
     <div id="hero">
       <main>
-        <h1>NFT ACCOUNTING.</h1>
-        <p class="instructions">
-          Less Losses. <br />
-          Bigger Profit. <br />
-          Built For Ethereum NFT Traders.
-        </p>
-        <Button state="howTo" title="How Does It Work?" />
-        <Button state="signUp" title="Sign Up" />
+        <div id="heroHeader">
+          <h1>NFT ACCOUNTING.</h1>
+          <div class="signUpBtn signUpBtnHero">
+            <Button state="signUp" title="Sign Up" fontSize="0.5rem" />
+            <img style="margin-left: 0.5rem;" src="left-arrow.png" />
+          </div>
+        </div>
+        <div id="heroText">
+          <p class="instructions">
+            Less Losses. <br />
+            Bigger Profit. <br />
+            Built For Ethereum NFT Traders.
+          </p>
+          <div id="howToBtn">
+            <img style="margin-right: 0.5rem;" src="right-arrow.png" />
+            <Button state="howTo" title="How Does It Work?" fontSize="0.7rem" />
+          </div>
+        </div>
       </main>
     </div>
     <div id="howTo">
       <main>
         <h1>How It Works.</h1>
-        <ol class="instructions">
-          <li>Automatically Get data on every trade you make.</li>
-          <li>Anyalyze and Write notes On your trades.</li>
-          <li>Profit.</li>
-        </ol>
-        <Button state="signUp" title="Sign Up" />
-        <h1>Sound Simple?</h1>
-        <p class="instructions">
+        <div id="howToText">
+          <ol class="instructions">
+            <li>Automatically get data on every trade you make.</li>
+            <li>Anyalyze and write notes on your trades.</li>
+            <li>Profit.</li>
+          </ol>
+          <div id="howToSignUpBtn">
+            <img style="margin-right: 0.5rem;" src="right-arrow.png" />
+            <Button state="signUp" title="Sign Up" fontSize="0.5rem" />
+          </div>
+        </div>
+        <h1 style="text-align: right;">Sound Simple?</h1>
+        <p class="instructions" style="text-align: right;">
           That’s because it is. <br />
-          We’ve got experts on hand to help you manage your extra cash. <br />
+          We’ll have experts on hand to help you manage your extra cash. <br />
           And, if you don’t improve your trading in 1 month we will fully refund you. <br />
         </p>
       </main>
@@ -47,14 +62,55 @@ import Button from "../components/Button.astro";
     <div id="signUp">
       <main>
         <h1>Join Us.</h1>
-        <p class="instructions">We’re building! sign up and follow us to keep up to date on our progress.</p>
-        <form>
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <button title="Submit">Submit</button>
-        </form>
-        <p class="instructions">
-          Follow us on <span style="color:rgb(69,177,255);">Twitter</span> and join our <span style="color:rgb(98,169,234);">Discord</span>!
+        <p class="instructions" style="padding-bottom: 0.5rem;">We’re building! Sign up and follow us to keep up to date on our progress.</p>
+        <!-- Begin Mailchimp Signup Form -->
+        <div id="mc_embed_signup">
+          <form
+            action="https://gmail.us21.list-manage.com/subscribe/post?u=a23a879591a0026b392977896&id=2a97454cc2&f_id=00f6c8e1f0"
+            method="post"
+            id="mc-embedded-subscribe-form"
+            name="mc-embedded-subscribe-form"
+            class="validate"
+            target="_blank"
+          >
+            <div id="mc_embed_signup_scroll">
+              <div class="mc-field-group">
+                <input type="email" value="" name="EMAIL" class="formInput" placeholder="Email Address" id="mce-EMAIL" required />
+                <span id="mce-EMAIL-HELPERTEXT" class="helper_text"></span>
+              </div>
+              <div class="mc-field-group">
+                <input type="text" value="" name="FNAME" class="formInput" id="mce-FNAME" placeholder="First Name" />
+                <span id="mce-FNAME-HELPERTEXT" class="helper_text"></span>
+              </div>
+              <div id="mce-responses" class="clear foot">
+                <div class="response" id="mce-error-response" style="display:none"></div>
+                <div class="response" id="mce-success-response" style="display:none"></div>
+              </div>
+              <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+              <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                <input type="text" name="b_a23a879591a0026b392977896_2a97454cc2" tabindex="-1" value="" />
+              </div>
+              <div class="optionalParent">
+                <div class="clear foot">
+                  <input
+                    type="submit"
+                    value="Subscribe"
+                    name="subscribe"
+                    id="mc-embedded-subscribe"
+                    class="formInput"
+                    style="background: rgb(49, 100, 255); color: white; margin-bottom: 0.5rem;"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!--End mc_embed_signup-->
+        <p class="instructions" style="padding-bottom: 1rem;">
+          Follow us on <a href="https://twitter.com/nftaccountingio" target="_blank" style="text-decoration: none; color:rgb(69,177,255);"
+            >Twitter
+          </a>and join our <a href="https://discord.gg/fjkwfhUZyX" target="_blank" style="text-decoration: none; color:rgb(98,169,234);">Discord!</a>
         </p>
       </main>
     </div>
@@ -67,9 +123,10 @@ import Button from "../components/Button.astro";
     const howTo = document.getElementById("howTo");
     const signUp = document.getElementById("signUp");
     const wrapper = document.getElementById("tiles");
+    const tileSize = 100;
 
-    let columns = Math.floor(screen.width / 40),
-      rows = Math.floor(screen.height / 40);
+    let columns = Math.floor(screen.width / tileSize),
+      rows = Math.floor(screen.height / tileSize);
 
     let toggled = false;
 
@@ -80,22 +137,9 @@ import Button from "../components/Button.astro";
 
     // Event Listeners Start
 
-    btn1.forEach((element, value) => {
+    btn1.forEach((element) => {
       element.addEventListener("click", () => {
         howTo.scrollIntoView({ behavior: "smooth", block: "center" });
-
-        toggled = value;
-
-        hero.classList.toggle("toggled");
-        //document.body.classList.toggle("toggled");
-
-        anime({
-          targets: ".tile",
-          opacity: toggled ? 0 : 1,
-          delay: anime.stagger(20, {
-            grid: [columns, rows],
-          }),
-        });
       });
     });
 
@@ -130,8 +174,8 @@ import Button from "../components/Button.astro";
     const createGrid = () => {
       wrapper.innerHTML = "";
 
-      columns = Math.floor(screen.width / 40);
-      rows = Math.floor(screen.height / 40);
+      columns = Math.floor(screen.width / tileSize);
+      rows = Math.floor(screen.height / tileSize);
 
       wrapper.style.setProperty("--columns", columns);
       wrapper.style.setProperty("--rows", rows);
@@ -142,21 +186,16 @@ import Button from "../components/Button.astro";
     // Tile Logic End
 
     // Scroll Logic Start
-    const signUpPosition = signUp.getBoundingClientRect().bottom + (signUp.getBoundingClientRect().height/4);
-    console.log("signup pos", signUpPosition);
-    const howToPosition = howTo.getBoundingClientRect().bottom + (howTo.getBoundingClientRect().height/4);
-    console.log("howto pos", howToPosition);
+    const signUpPosition = screen.height + screen.height / 2;
+    const howToPosition = screen.height / 2;
 
     const scrollBehaviour = (target, value) => {
       toggled = value;
 
-      hero.classList.toggle("toggled");
-      //document.body.classList.toggle("toggled");
-
       anime({
         targets: ".tile",
         opacity: toggled ? 0 : 1,
-        delay: anime.stagger(20, {
+        delay: anime.stagger(40, {
           grid: [columns, rows],
         }),
       });
@@ -167,15 +206,12 @@ import Button from "../components/Button.astro";
       if (state == "home" && scrollState != "home") {
         scrollState = "home";
         scrollBehaviour(hero, false);
-        console.log("at home");
       } else if (state == "howTo" && scrollState != "howTo") {
         scrollState = "howTo";
         scrollBehaviour(howTo, true);
-        console.log("at howTo");
       } else if (state == "signUp" && scrollState != "signUp") {
         scrollState = "signUp";
         scrollBehaviour(signUp, false);
-        console.log("at signUp");
       }
     }
 
@@ -188,7 +224,6 @@ import Button from "../components/Button.astro";
     setInterval(() => {
       if (scrolling) {
         scrolling = false;
-        console.log(window.scrollY);
         if (window.scrollY >= 0 && window.scrollY < howToPosition) {
           setScrollState("home");
         } else if (window.scrollY >= howToPosition && window.scrollY < signUpPosition) {
@@ -209,8 +244,10 @@ import Button from "../components/Button.astro";
     @import url("https://fonts.googleapis.com/css2?family=Yantramanav:wght@500;900&display=swap");
 
     :root {
-      --g1: rgb(20, 20, 20);
-      --g2: rgb(50, 50, 50);
+      --g1: rgb(104, 34, 34);
+      --g2: rgb(24, 25, 87);
+      --current1: var(--g1);
+      --current2: var(--g2);
     }
     html {
       font-family: "Yantramanav", sans-serif;
@@ -282,7 +319,7 @@ import Button from "../components/Button.astro";
       min-height: 100vh;
       margin: 0;
       animation: background-pan 10s linear infinite;
-      background: linear-gradient(to right, var(--g1), var(--g2), var(--g1));
+      background: linear-gradient(to right, var(--current1), var(--current2), var(--current1));
       background-size: 200%;
     }
 
@@ -349,6 +386,61 @@ import Button from "../components/Button.astro";
       grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
       gap: 1rem;
       padding: 0;
+    }
+
+    #heroHeader {
+      position: relative;
+    }
+
+    .signUpBtn {
+      position: absolute;
+      right: 1.5em;
+      top: 5rem;
+      z-index: 2;
+    }
+
+    #howToBtn {
+      position: absolute;
+      left: 1em;
+      top: 4.5rem;
+    }
+
+    #heroText {
+      position: relative;
+      padding-bottom: 4.5rem;
+    }
+
+    ol {
+      margin: 0;
+    }
+
+    #howToSignUpBtn {
+      position: absolute;
+      left: 1em;
+      top: 4.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #howToText {
+      position: relative;
+      padding-bottom: 3.5rem;
+    }
+
+    .formInput {
+      padding: 0.5rem;
+      border: 1px solid rgb(49, 100, 255);
+      border-radius: 4px;
+      font-size: 0.5rem;
+      font-weight: 900;
+      width: 100%;
+    }
+
+    .mc-field-group {
+      display: flex;
     }
   </style>
 </html>
