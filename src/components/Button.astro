@@ -1,0 +1,17 @@
+---
+export interface Props {
+  title: string;
+  state: string;
+}
+
+const { title, state } = Astro.props;
+---
+
+<button class={"btn_" + state}>{title}</button>
+
+<style>
+  button {
+    background: rgb(49, 100, 255);
+    color: white;
+  }
+</style>

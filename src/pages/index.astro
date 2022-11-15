@@ -1,0 +1,354 @@
+---
+import Button from "../components/Button.astro";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>NFTAccounting</title>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="tiles"></div>
+    </div>
+    <div id="hero">
+      <main>
+        <h1>NFT ACCOUNTING.</h1>
+        <p class="instructions">
+          Less Losses. <br />
+          Bigger Profit. <br />
+          Built For Ethereum NFT Traders.
+        </p>
+        <Button state="howTo" title="How Does It Work?" />
+        <Button state="signUp" title="Sign Up" />
+      </main>
+    </div>
+    <div id="howTo">
+      <main>
+        <h1>How It Works.</h1>
+        <ol class="instructions">
+          <li>Automatically Get data on every trade you make.</li>
+          <li>Anyalyze and Write notes On your trades.</li>
+          <li>Profit.</li>
+        </ol>
+        <Button state="signUp" title="Sign Up" />
+        <h1>Sound Simple?</h1>
+        <p class="instructions">
+          That’s because it is. <br />
+          We’ve got experts on hand to help you manage your extra cash. <br />
+          And, if you don’t improve your trading in 1 month we will fully refund you. <br />
+        </p>
+      </main>
+    </div>
+    <div id="signUp">
+      <main>
+        <h1>Join Us.</h1>
+        <p class="instructions">We’re building! sign up and follow us to keep up to date on our progress.</p>
+        <form>
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="Email" />
+          <button title="Submit">Submit</button>
+        </form>
+        <p class="instructions">
+          Follow us on <span style="color:rgb(69,177,255);">Twitter</span> and join our <span style="color:rgb(98,169,234);">Discord</span>!
+        </p>
+      </main>
+    </div>
+  </body>
+  <script type="module" is:inline>
+    // Variables Start
+    import anime from "https://cdn.skypack.dev/animejs";
+
+    const hero = document.getElementById("hero");
+    const howTo = document.getElementById("howTo");
+    const signUp = document.getElementById("signUp");
+    const wrapper = document.getElementById("tiles");
+
+    let columns = Math.floor(screen.width / 40),
+      rows = Math.floor(screen.height / 40);
+
+    let toggled = false;
+
+    const btn1 = Array.from(document.getElementsByClassName("btn_howTo"));
+    const btn2 = Array.from(document.getElementsByClassName("btn_signUp"));
+
+    // Variables End
+
+    // Event Listeners Start
+
+    btn1.forEach((element, value) => {
+      element.addEventListener("click", () => {
+        howTo.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        toggled = value;
+
+        hero.classList.toggle("toggled");
+        //document.body.classList.toggle("toggled");
+
+        anime({
+          targets: ".tile",
+          opacity: toggled ? 0 : 1,
+          delay: anime.stagger(20, {
+            grid: [columns, rows],
+          }),
+        });
+      });
+    });
+
+    btn2.forEach((element) => {
+      element.addEventListener("click", () => {
+        signUp.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+
+    // Event Listeners End
+
+    // Tile Logic Start
+
+    const createTile = (index) => {
+      const tile = document.createElement("div");
+
+      tile.classList.add("tile");
+
+      tile.onclick = (e) => handleOnClick(index);
+
+      return tile;
+    };
+
+    const createTiles = (quantity) => {
+      Array.from(Array(quantity)).map((tile, index) => {
+        wrapper.appendChild(createTile(index));
+      });
+    };
+
+    createTiles(columns * rows);
+
+    const createGrid = () => {
+      wrapper.innerHTML = "";
+
+      columns = Math.floor(screen.width / 40);
+      rows = Math.floor(screen.height / 40);
+
+      wrapper.style.setProperty("--columns", columns);
+      wrapper.style.setProperty("--rows", rows);
+
+      createTiles(columns * rows);
+    };
+
+    // Tile Logic End
+
+    // Scroll Logic Start
+    const signUpPosition = signUp.getBoundingClientRect().bottom + (signUp.getBoundingClientRect().height/4);
+    console.log("signup pos", signUpPosition);
+    const howToPosition = howTo.getBoundingClientRect().bottom + (howTo.getBoundingClientRect().height/4);
+    console.log("howto pos", howToPosition);
+
+    const scrollBehaviour = (target, value) => {
+      toggled = value;
+
+      hero.classList.toggle("toggled");
+      //document.body.classList.toggle("toggled");
+
+      anime({
+        targets: ".tile",
+        opacity: toggled ? 0 : 1,
+        delay: anime.stagger(20, {
+          grid: [columns, rows],
+        }),
+      });
+    };
+
+    let scrollState = "home";
+    function setScrollState(state) {
+      if (state == "home" && scrollState != "home") {
+        scrollState = "home";
+        scrollBehaviour(hero, false);
+        console.log("at home");
+      } else if (state == "howTo" && scrollState != "howTo") {
+        scrollState = "howTo";
+        scrollBehaviour(howTo, true);
+        console.log("at howTo");
+      } else if (state == "signUp" && scrollState != "signUp") {
+        scrollState = "signUp";
+        scrollBehaviour(signUp, false);
+        console.log("at signUp");
+      }
+    }
+
+    let scrolling = false;
+
+    window.onscroll = () => {
+      scrolling = true;
+    };
+
+    setInterval(() => {
+      if (scrolling) {
+        scrolling = false;
+        console.log(window.scrollY);
+        if (window.scrollY >= 0 && window.scrollY < howToPosition) {
+          setScrollState("home");
+        } else if (window.scrollY >= howToPosition && window.scrollY < signUpPosition) {
+          setScrollState("howTo");
+        } else if (window.scrollY >= signUpPosition) {
+          setScrollState("signUp");
+        }
+      }
+    }, 100);
+
+    // Scroll Logic End
+
+    window.onload = () => createGrid();
+    window.onresize = () => createGrid();
+  </script>
+
+  <style is:global>
+    @import url("https://fonts.googleapis.com/css2?family=Yantramanav:wght@500;900&display=swap");
+
+    :root {
+      --g1: rgb(20, 20, 20);
+      --g2: rgb(50, 50, 50);
+    }
+    html {
+      font-family: "Yantramanav", sans-serif;
+      font-size: 2rem;
+      font-weight: 100;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    @keyframes background-pan {
+      from {
+        background-position: 0% center;
+      }
+
+      to {
+        background-position: -200% center;
+      }
+    }
+
+    @keyframes enter-pan {
+      from {
+        height: 90vh;
+        opacity: 0;
+      }
+
+      to {
+        height: 100vh;
+        opacity: 100;
+      }
+    }
+
+    @keyframes exit {
+      from {
+        height: 100vh;
+        opacity: 100;
+      }
+
+      to {
+        height: 90vh;
+        opacity: 0;
+      }
+    }
+
+    #signUp {
+      animation: enter-pan 1s ease-out forwards !important;
+      display: flex !important;
+      height: 100vh;
+    }
+
+    #howTo {
+      animation: enter-pan 1s ease-out forwards !important;
+      display: flex !important;
+      height: 100vh;
+    }
+
+    #hero {
+      animation: enter-pan 1s ease-out forwards !important;
+      display: flex !important;
+      height: 100vh;
+    }
+
+    .toggled {
+      animation: exit 1s ease forwards;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      animation: background-pan 10s linear infinite;
+      background: linear-gradient(to right, var(--g1), var(--g2), var(--g1));
+      background-size: 200%;
+    }
+
+    code {
+      font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+    }
+
+    #wrapper {
+      position: fixed;
+      z-index: -1;
+    }
+
+    .tile {
+      position: relative;
+    }
+
+    .tile::before {
+      background-color: rgb(18, 21, 30);
+      content: "";
+      position: absolute;
+      inset: 0.6px;
+    }
+
+    .tile:hover {
+      opacity: 0.95;
+    }
+
+    #tiles {
+      height: 100vh;
+      width: 100vw;
+
+      display: grid;
+      grid-template-columns: repeat(var(--columns), 1fr);
+      grid-template-rows: repeat(var(--rows), 1fr);
+    }
+
+    main {
+      margin: auto;
+      padding: 1.5rem;
+      max-width: 150ch;
+    }
+    h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      margin: 0;
+      color: white;
+    }
+    .instructions {
+      color: white;
+    }
+    .instructions code {
+      font-size: 0.875em;
+      font-weight: bold;
+      background: rgba(var(--accent), 12%);
+      color: rgb(var(--accent));
+      border-radius: 4px;
+      padding: 0.3em 0.45em;
+    }
+    .instructions strong {
+      color: rgb(var(--accent));
+    }
+    .link-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+      gap: 1rem;
+      padding: 0;
+    }
+  </style>
+</html>
