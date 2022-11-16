@@ -187,7 +187,7 @@ import Button from "../components/Button.astro";
           targets: ".tile",
           opacity: 1,
           duration: 5000,
-        })
+        });
       }, 100);
     };
 
@@ -259,7 +259,7 @@ import Button from "../components/Button.astro";
     }
     html {
       font-family: "Yantramanav", sans-serif;
-      font-size: 2rem;
+      font-size: 36px;
       font-weight: 100;
     }
 
@@ -371,7 +371,7 @@ import Button from "../components/Button.astro";
       max-width: 150ch;
     }
     h1 {
-      font-size: 4rem;
+      font-size: 3.5rem;
       font-weight: 900;
       margin: 0;
       color: white;
@@ -450,6 +450,18 @@ import Button from "../components/Button.astro";
 
     .mc-field-group {
       display: flex;
+    }
+
+    @media only screen and (max-width: 800px) {
+      html {
+        font-size: 16px;
+      }
+    }
+
+    @media only screen and (max-width: 1250px) {
+      html {
+        font-size: 24px;
+      }
     }
   </style>
 </html>
