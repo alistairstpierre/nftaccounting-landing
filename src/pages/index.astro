@@ -186,7 +186,6 @@ import Button from "../components/Button.astro";
           anime({
             targets: ".tile",
             opacity: 1,
-            duration: 5000,
           });
         }, 100);
       };
@@ -199,6 +198,8 @@ import Button from "../components/Button.astro";
 
       const scrollBehaviour = (target, value) => {
         toggled = value;
+
+        console.log(target)
 
         anime({
           targets: ".tile",
