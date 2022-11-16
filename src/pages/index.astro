@@ -181,6 +181,14 @@ import Button from "../components/Button.astro";
       wrapper.style.setProperty("--rows", rows);
 
       createTiles(columns * rows);
+
+      setTimeout(() => {
+        anime({
+          targets: ".tile",
+          opacity: 1,
+          duration: 5000,
+        })
+      }, 100);
     };
 
     // Tile Logic End
@@ -238,13 +246,6 @@ import Button from "../components/Button.astro";
 
     window.onload = () => createGrid();
     window.onresize = () => createGrid();
-    setTimeout(() => {
-        anime({
-          targets: ".tile",
-          opacity: 1,
-          duration: 5000,
-        })
-      }, 100);
   </script>
 
   <style is:global>
