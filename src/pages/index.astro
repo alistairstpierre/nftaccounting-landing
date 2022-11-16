@@ -238,6 +238,13 @@ import Button from "../components/Button.astro";
 
     window.onload = () => createGrid();
     window.onresize = () => createGrid();
+    setTimeout(() => {
+        anime({
+          targets: ".tile",
+          opacity: 1,
+          duration: 5000,
+        })
+      }, 100);
   </script>
 
   <style is:global>
@@ -334,6 +341,7 @@ import Button from "../components/Button.astro";
 
     .tile {
       position: relative;
+      opacity: 0;
     }
 
     .tile::before {
