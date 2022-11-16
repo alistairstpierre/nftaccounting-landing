@@ -20,8 +20,8 @@ import Button from "../components/Button.astro";
         <div id="heroHeader">
           <h1>NFT ACCOUNTING.</h1>
           <div class="signUpBtn signUpBtnHero">
-            <Button state="signUp" title="Sign Up" fontSize="0.5rem" />
-            <img style="margin-left: 0.5rem;" src="left-arrow.png" />
+            <Button state="signUp" title="Sign Up" />
+            <img class="arrowImg" style="margin-left: 0.5rem;" src="left-arrow.png" />
           </div>
         </div>
         <div id="heroText">
@@ -31,8 +31,8 @@ import Button from "../components/Button.astro";
             Built For Ethereum NFT Traders.
           </p>
           <div id="howToBtn">
-            <img style="margin-right: 0.5rem;" src="right-arrow.png" />
-            <Button state="howTo" title="How Does It Work?" fontSize="0.7rem" />
+            <img class="arrowImg" style="margin-right: 0.5rem;" src="right-arrow.png" />
+            <Button state="howTo" title="How Does It Work?" />
           </div>
         </div>
       </main>
@@ -47,11 +47,11 @@ import Button from "../components/Button.astro";
             <li>Profit.</li>
           </ol>
           <div id="howToSignUpBtn">
-            <img style="margin-right: 0.5rem;" src="right-arrow.png" />
-            <Button state="signUp" title="Sign Up" fontSize="0.5rem" />
+            <img class="arrowImg" style="margin-right: 0.5rem;" src="right-arrow.png" />
+            <Button state="signUp" title="Sign Up" />
           </div>
         </div>
-        <h1 style="text-align: right;">Sound Simple?</h1>
+        <h1 id="howToHeader2" style="text-align: right;">Sound Simple?</h1>
         <p class="instructions" style="text-align: right;">
           That’s because it is. <br />
           We’ll have experts on hand to help you manage your extra cash. <br />
@@ -150,102 +150,102 @@ import Button from "../components/Button.astro";
     });
 
     // Event Listeners End
+    if (window.innerWidth > 800) {
+      // Tile Logic Start
 
-    // Tile Logic Start
+      const createTile = (index) => {
+        const tile = document.createElement("div");
 
-    const createTile = (index) => {
-      const tile = document.createElement("div");
+        tile.classList.add("tile");
 
-      tile.classList.add("tile");
+        tile.onclick = (e) => handleOnClick(index);
 
-      tile.onclick = (e) => handleOnClick(index);
+        return tile;
+      };
 
-      return tile;
-    };
-
-    const createTiles = (quantity) => {
-      Array.from(Array(quantity)).map((tile, index) => {
-        wrapper.appendChild(createTile(index));
-      });
-    };
-
-    createTiles(columns * rows);
-
-    const createGrid = () => {
-      wrapper.innerHTML = "";
-
-      columns = Math.floor(screen.width / tileSize);
-      rows = Math.floor(screen.height / tileSize);
-
-      wrapper.style.setProperty("--columns", columns);
-      wrapper.style.setProperty("--rows", rows);
+      const createTiles = (quantity) => {
+        Array.from(Array(quantity)).map((tile, index) => {
+          wrapper.appendChild(createTile(index));
+        });
+      };
 
       createTiles(columns * rows);
 
-      setTimeout(() => {
+      const createGrid = () => {
+        wrapper.innerHTML = "";
+
+        columns = Math.floor(screen.width / tileSize);
+        rows = Math.floor(screen.height / tileSize);
+
+        wrapper.style.setProperty("--columns", columns);
+        wrapper.style.setProperty("--rows", rows);
+
+        createTiles(columns * rows);
+
+        setTimeout(() => {
+          anime({
+            targets: ".tile",
+            opacity: 1,
+            duration: 5000,
+          });
+        }, 100);
+      };
+
+      // Tile Logic End
+
+      // Scroll Logic Start
+      const signUpPosition = screen.height + screen.height / 2;
+      const howToPosition = screen.height / 2;
+
+      const scrollBehaviour = (target, value) => {
+        toggled = value;
+
         anime({
           targets: ".tile",
-          opacity: 1,
-          duration: 5000,
+          opacity: toggled ? 0 : 1,
+          delay: anime.stagger(40, {
+            grid: [columns, rows],
+          }),
         });
-      }, 100);
-    };
+      };
 
-    // Tile Logic End
-
-    // Scroll Logic Start
-    const signUpPosition = screen.height + screen.height / 2;
-    const howToPosition = screen.height / 2;
-
-    const scrollBehaviour = (target, value) => {
-      toggled = value;
-
-      anime({
-        targets: ".tile",
-        opacity: toggled ? 0 : 1,
-        delay: anime.stagger(40, {
-          grid: [columns, rows],
-        }),
-      });
-    };
-
-    let scrollState = "home";
-    function setScrollState(state) {
-      if (state == "home" && scrollState != "home") {
-        scrollState = "home";
-        scrollBehaviour(hero, false);
-      } else if (state == "howTo" && scrollState != "howTo") {
-        scrollState = "howTo";
-        scrollBehaviour(howTo, true);
-      } else if (state == "signUp" && scrollState != "signUp") {
-        scrollState = "signUp";
-        scrollBehaviour(signUp, false);
-      }
-    }
-
-    let scrolling = false;
-
-    window.onscroll = () => {
-      scrolling = true;
-    };
-
-    setInterval(() => {
-      if (scrolling) {
-        scrolling = false;
-        if (window.scrollY >= 0 && window.scrollY < howToPosition) {
-          setScrollState("home");
-        } else if (window.scrollY >= howToPosition && window.scrollY < signUpPosition) {
-          setScrollState("howTo");
-        } else if (window.scrollY >= signUpPosition) {
-          setScrollState("signUp");
+      let scrollState = "home";
+      function setScrollState(state) {
+        if (state == "home" && scrollState != "home") {
+          scrollState = "home";
+          scrollBehaviour(hero, false);
+        } else if (state == "howTo" && scrollState != "howTo") {
+          scrollState = "howTo";
+          scrollBehaviour(howTo, true);
+        } else if (state == "signUp" && scrollState != "signUp") {
+          scrollState = "signUp";
+          scrollBehaviour(signUp, false);
         }
       }
-    }, 100);
 
-    // Scroll Logic End
+      let scrolling = false;
 
-    window.onload = () => createGrid();
-    window.onresize = () => createGrid();
+      window.onscroll = () => {
+        scrolling = true;
+      };
+
+      setInterval(() => {
+        if (scrolling) {
+          scrolling = false;
+          if (window.scrollY >= 0 && window.scrollY < howToPosition) {
+            setScrollState("home");
+          } else if (window.scrollY >= howToPosition && window.scrollY < signUpPosition) {
+            setScrollState("howTo");
+          } else if (window.scrollY >= signUpPosition) {
+            setScrollState("signUp");
+          }
+        }
+      }, 100);
+
+      // Scroll Logic End
+      window.onload = () => createGrid();
+      window.onresize = () => createGrid();
+    }
   </script>
 
   <style is:global>
@@ -259,7 +259,7 @@ import Button from "../components/Button.astro";
     }
     html {
       font-family: "Yantramanav", sans-serif;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 100;
     }
 
@@ -456,9 +456,81 @@ import Button from "../components/Button.astro";
       html {
         font-size: 16px;
       }
+
+      h1{
+        font-size: 3.25rem;
+      }
+
+      #howTo h1{
+        color: black;
+      }
+
+      #howTo .instructions{
+        color: black;
+      }
+
+      .instructions{
+        font-size: 1.6em;
+      }   
+
+      .arrowImg{
+        width: 1.5em;
+      }
+
+      .signUpBtn button{
+        top: 4rem;
+        font-size: 0.75rem;
+      }
+
+      #howToBtn{
+        top: 8rem;
+      }
+
+      #howToSignUpBtn{
+        top: 12rem;
+      }
+      
+      #howToHeader2{
+        margin-top: 5rem;
+      }
+
+      #howTo{
+        height: 100%;
+        animation: none !important;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        background: white;
+        background-image: url("/gridWhite.png");
+        background-repeat: repeat;
+      }
+
+      #hero{
+        height: 100%;
+        animation: none !important;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        background: black;
+        background-image: url("/gridBlack.png");
+        background-repeat: repeat;
+      }
+
+      #signUp{
+        height: 100%;
+        animation: none !important;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        background: black;
+        background-image: url("/gridBlack.png");
+        background-repeat: repeat;
+      }
+
+      body{
+        background: black;
+        animation: none !important;
+      }
     }
 
-    @media only screen and (max-width: 1250px) {
+    @media only screen and (max-width: 1250px) and (min-width: 800px) {
       html {
         font-size: 24px;
       }
